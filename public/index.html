@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <style type="text/css">
+      #special-message {
+        color:DD3322;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Murano Playground</h1>
+    Welcome to your Murano solution! Here are some things you can do.
+
+    <ol>
+      <li>It provides an API you can modify</li>
+        <p id="demo-api">
+        <label>Special Message:</label> <span id="special-message"></span>
+        <form>
+        <input type="button" id="demo-api-button" value="Call your API for a special message" />
+        </form>
+        </p>
+      <li>It can send email.</li>
+      <p id="demo-email">
+        <form>
+        <label>Email Address</label><p><input id="demo-email-email" /></p>
+        <label>Message</label><p><input id="demo-email-message" /></p>
+        <input id="demo-email-button" type="button" value="Send" />
+        </form>
+      </p>
+    </ol>
+
+    <script type="application/javascript">
+      $("#demo-api-button").click(function() {
+        $.ajax({
+          url: '/simple-get',
+          method: 'GET',
+          error: function(xhr, textStatus, error) {
+            $('#special-message').html('Error: ' + textStatus);
+          },
+          success: function(data, textStatus, xhr) {
+            $('#special-message').html(data);
+          }
+        });
+      });
+      $("#demo-email-button").click(function() {
+        $.ajax({
+          url: '/send-email', 
+          method: 'POST',
+          body: JSON.stringify({
+            email: $('.demo-email-email').val(), 
+            message: $('#demo-email-message').val()
+            }),
+          error: function(xhr, textStatus, error) {
+            alert('Error: ' + textStatus);
+          },
+          success: function(data, textStatus, xhr) {
+            alert('Message sent.');
+          }
+        });
+      });
+
+    </script> 
+  </body>
+</html>
